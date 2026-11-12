@@ -24,6 +24,7 @@ main{max-width:820px;margin:0 auto;padding:16px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 2px}
 .chip{border-radius:999px;padding:7px 12px;font-size:.82rem;font-weight:600;background:var(--card);border:1px solid var(--line)}
 .chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tag{display:inline-block;font-size:.68rem;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--soft);color:var(--muted);vertical-align:middle}
 .disc{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
 .disc:last-child{border-bottom:0}
 .disc-main{flex:1;min-width:0}

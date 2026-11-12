@@ -1,4 +1,4 @@
-/* Simulado DSA — contador + persistência robusta (localStorage + backup + sessão retomável) */
+/* Simulado DSA — contador, filtro por dia e revisão de erradas */
 const KEY = 'dsa_sim_v1';
 const KEY_BK = 'dsa_sim_v1_backup';
 const IMG_BASE = 'img/';
@@ -8,12 +8,69 @@ const AREAS = {
 };
 const LETRAS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
+/* Cronograma: dia → disciplinas */
+const DIAS = {
+  qua: { rotulo: 'Qua 11', discs: [
+    'Supervised Machine Learning: Análise de Regressão Simples e Múltipla I',
+    'Supervised Machine Learning: Análise de Regressão Simples e Múltipla II',
+    'Supervised Machine Learning: Análise de Regressão Simples e Múltipla III',
+    'Supervised Machine Learning: Análise de Regressão Simples e Múltipla IV',
+    'Fundamentos de Estatística e Introdução à Programação com Python',
+    'Análise da Conjuntura Econômica em Cenários de Tecnologias Disruptivas I',
+    'Análise da Conjuntura Econômica em Cenários de Tecnologias Disruptivas II'] },
+  qui: { rotulo: 'Qui 12', discs: [
+    'Data Wrangling I', 'Data Wrangling II', 'Data Wrangling III', 'Data Wrangling IV',
+    'Coleta de Dados: Crawlers e Web Scraping',
+    'Text Mining, Sentiment Analysis e NLP I', 'Text Mining, Sentiment Analysis e NLP II',
+    'Text Mining, Sentiment Analysis e NLP III',
+    'Cloud Computing I', 'Cloud Computing II'] },
+  sex: { rotulo: 'Sex 13', discs: [
+    'Social Network Analysis I', 'Social Network Analysis II',
+    'Pesquisa Operacional e Modelos de Otimização I',
+    'Pesquisa Operacional e Modelos de Otimização II',
+    'Pesquisa Operacional e Modelos de Otimização III',
+    'Séries Temporais I', 'Séries Temporais II', 'Séries Temporais III',
+    'Analytics e Gestão de Riscos I', 'Analytics e Gestão de Riscos II',
+    'Big Data e Deployment de Modelos I', 'Big Data e Deployment de Modelos II',
+    'Modelagem Matemática e Estruturação de Problemas Complexos I',
+    'Modelagem Matemática e Estruturação de Problemas Complexos II'] },
+  sab: { rotulo: 'Sáb 14', discs: [
+    'Supervised Machine Learning: Modelos Logísticos Binários e Multinomiais I',
+    'Supervised Machine Learning: Modelos Logísticos Binários e Multinomiais II',
+    'Supervised Machine Learning: Modelos para Dados de Contagem I',
+    'Supervised Machine Learning: Modelos para Dados de Contagem II',
+    'Supervised Machine Learning: Modelagem Multinível I',
+    'Supervised Machine Learning: Modelagem Multinível II',
+    'Árvores, Redes e Ensemble Models I', 'Árvores, Redes e Ensemble Models II',
+    'Árvores, Redes e Ensemble Models III',
+    'Introdução ao Deep Learning e Inteligência Artificial',
+    'Deep Learning e Inteligência Artificial I',
+    'Engenharia de dados I', 'Engenharia de dados II', 'Engenharia de dados III',
+    'Computação Evolucionária I', 'Computação Evolucionária II'] },
+  dom: { rotulo: 'Dom 15', discs: [
+    'Unsupervised Machine Learning: Clustering I', 'Unsupervised Machine Learning: Clustering II',
+    'Unsupervised Machine Learning: Análise Fatorial e PCA I',
+    'Unsupervised Machine Learning: Análise Fatorial e PCA II',
+    'Unsupervised Machine Learning: Análise de Correspondência Simples e Múltipla I - 13/01/26',
+    'Unsupervised Machine Learning: Análise de Correspondência Simples e Múltipla II',
+    'Unsupervised Machine Learning: Exercícios Aplicados',
+    'Metodologias Ágeis I', 'Metodologias Ágeis II',
+    'Legislação no Ambiente Digital (LGPD)',
+    'Business Intelligence e Data Visualization I',
+    'Business Intelligence e Data Visualization II',
+    'Business Intelligence e Data Visualization III',
+    'Liderança em Data Science'] }
+};
+const DIA_DE = {};
+for (const [k, d] of Object.entries(DIAS)) d.discs.forEach(nome => DIA_DE[nome] = k);
+
 const byId = {};
 for (const q of BANCO) byId[q.id] = q;
 
 let store = load();
 let quiz = null;
 let filtroArea = 0;
+let filtroDia = '';
 
 /* ---------- persistência ---------- */
 function vazio() { return { answers: {}, session: null, updatedAt: null }; }
@@ -26,11 +83,9 @@ function save() {
   try {
     const txt = JSON.stringify(store);
     localStorage.setItem(KEY, txt);
-    localStorage.setItem(KEY_BK, txt);      // cópia de segurança
+    localStorage.setItem(KEY_BK, txt);
     flash('Salvo ' + new Date().toLocaleTimeString('pt-BR'));
-  } catch (e) {
-    flash('ERRO ao salvar: ' + e.message, true);
-  }
+  } catch (e) { flash('ERRO ao salvar: ' + e.message, true); }
 }
 let flashTimer = null;
 function flash(msg, erro) {
@@ -44,7 +99,6 @@ function flash(msg, erro) {
     el.style.color = 'var(--muted)';
   }, 2500);
 }
-/* grava também ao sair/trocar de aba */
 addEventListener('pagehide', () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} });
 addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} } });
 
@@ -55,11 +109,14 @@ const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { c
 
 function answered(q) { const a = store.answers[q.id]; return !!(a && a.sel != null); }
 function isCorrect(q) { const a = store.answers[q.id]; return !!(a && a.ok === true); }
+function isWrong(q) { return answered(q) && !isCorrect(q); }
 
 function stats(list) {
-  let ans = 0, ok = 0;
-  for (const q of list) { if (answered(q)) { ans++; if (isCorrect(q)) ok++; } }
-  return { ans, ok, total: list.length };
+  let ans = 0, ok = 0, wrong = 0;
+  for (const q of list) {
+    if (answered(q)) { ans++; if (isCorrect(q)) ok++; else wrong++; }
+  }
+  return { ans, ok, wrong, total: list.length };
 }
 
 /* ---------- home ---------- */
@@ -69,8 +126,9 @@ function renderHome() {
 
   const discs = [...new Set(BANCO.map(q => q.d))].sort((a, b) => a.localeCompare(b, 'pt'));
   const visiveis = discs.filter(d => {
-    if (!filtroArea) return true;
-    return BANCO.some(q => q.d === d && q.a === filtroArea);
+    if (filtroDia && DIA_DE[d] !== filtroDia) return false;
+    if (filtroArea && !BANCO.some(q => q.d === d && q.a === filtroArea)) return false;
+    return true;
   });
 
   const banner = store.session ? `
@@ -85,22 +143,28 @@ function renderHome() {
       </div>
     </div>` : '';
 
-  const chips = [0, 1, 2, 3, 4, 5, 6].map(a => {
-    const label = a === 0 ? 'Todas' : `${a}. ${AREAS[a]}`;
+  const chipsArea = [0, 1, 2, 3, 4, 5, 6].map(a => {
+    const label = a === 0 ? 'Todas as áreas' : `${a}. ${AREAS[a]}`;
     return `<button class="chip ${filtroArea === a ? 'on' : ''}" data-area="${a}">${esc(label)}</button>`;
+  }).join('');
+
+  const chipsDia = ['', 'qua', 'qui', 'sex', 'sab', 'dom'].map(k => {
+    const label = k === '' ? 'Todos os dias' : DIAS[k].rotulo;
+    return `<button class="chip ${filtroDia === k ? 'on' : ''}" data-dia="${k}">${esc(label)}</button>`;
   }).join('');
 
   const rows = visiveis.map(d => {
     const list = BANCO.filter(q => q.d === d);
     const s = stats(list);
     const p = s.total ? Math.round(s.ans / s.total * 100) : 0;
-    const area = list[0].a;
+    const dia = DIA_DE[d] ? DIAS[DIA_DE[d]].rotulo : '—';
+    const btnErr = s.wrong ? `<button class="btn alt" data-start="${esc(d)}" data-mode="erradas">Erradas (${s.wrong})</button>` : '';
     return `
       <div class="disc">
         <div class="disc-main">
-          <div class="disc-name">${esc(d)}</div>
+          <div class="disc-name">${esc(d)} <span class="tag">${dia}</span></div>
           <div class="disc-meta">
-            <span>${s.ans}/${s.total} respondidas · ${s.ok} certas</span>
+            <span>${s.ans}/${s.total} · ${s.ok} certas · ${s.wrong} erradas</span>
             <span>${p}%</span>
           </div>
           <div class="bar"><i style="width:${p}%"></i></div>
@@ -108,6 +172,7 @@ function renderHome() {
         <div class="disc-actions">
           <button class="btn" data-start="${esc(d)}" data-mode="treino">Treinar</button>
           <button class="btn alt" data-start="${esc(d)}" data-mode="prova">Prova</button>
+          ${btnErr}
         </div>
       </div>`;
   }).join('');
@@ -116,24 +181,29 @@ function renderHome() {
     <div class="grid">
       <div class="tile"><b>${geral.ans}/${geral.total}</b><span>respondidas</span></div>
       <div class="tile"><b>${geral.ok}</b><span>certas</span></div>
-      <div class="tile"><b>${pct}%</b><span>aproveitamento</span></div>
+      <div class="tile"><b class="${geral.wrong ? 'fail' : ''}">${geral.wrong}</b><span>erradas</span></div>
     </div>
 
     ${banner}
+
+    ${geral.wrong ? `<button class="btn" id="btn-review-all" style="width:100%;padding:11px">Revisar todas as erradas (${geral.wrong})</button>` : ''}
 
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
         <b>Disciplinas</b>
         <button class="ghost" id="btn-reset">Zerar progresso</button>
       </div>
-      <div class="chips">${chips}</div>
-      <div style="margin-top:6px">${rows}</div>
+      <div class="chips">${chipsDia}</div>
+      <div class="chips">${chipsArea}</div>
+      <div style="margin-top:6px">${rows || '<p class="muted small">Nenhuma disciplina neste filtro.</p>'}</div>
     </div>
   `;
 
   document.querySelectorAll('[data-area]').forEach(b => b.onclick = () => { filtroArea = +b.dataset.area; renderHome(); });
-  document.querySelectorAll('[data-start]').forEach(b => b.onclick = () => startQuiz(b.dataset.start, b.dataset.mode));
+  document.querySelectorAll('[data-dia]').forEach(b => b.onclick = () => { filtroDia = b.dataset.dia; renderHome(); });
+  document.querySelectorAll('[data-start]').forEach(b => b.onclick = () => startDisc(b.dataset.start, b.dataset.mode));
   document.getElementById('btn-reset').onclick = resetAll;
+  if (geral.wrong) document.getElementById('btn-review-all').onclick = () => startList(BANCO.filter(isWrong), 'Revisão — todas as erradas', 'treino');
   if (store.session) {
     document.getElementById('btn-resume').onclick = resumeQuiz;
     document.getElementById('btn-discard').onclick = () => { store.session = null; save(); renderHome(); };
@@ -142,23 +212,26 @@ function renderHome() {
 
 function resetAll() {
   if (!confirm('Apagar TODO o progresso salvo? Isso não pode ser desfeito.')) return;
-  store = vazio();
-  save();
-  renderHome();
+  store = vazio(); save(); renderHome();
 }
 
 /* ---------- quiz ---------- */
-function buildItems(disc) {
-  return BANCO.filter(q => q.d === disc).map(q => {
+function buildItems(list) {
+  return list.map(q => {
     const opts = q.fixa ? q.ordem.map((_, k) => k) : shuffle(q.ordem.map((_, k) => k));
     return { id: q.id, opts, sel: null, done: false };
   });
 }
 
-function startQuiz(disc, mode) {
-  const items = buildItems(disc);
-  if (!items.length) return;
-  quiz = { disc, mode, items, i: 0 };
+function startDisc(disc, mode) {
+  const base = BANCO.filter(q => q.d === disc);
+  if (mode === 'erradas') return startList(base.filter(isWrong), disc + ' — erradas', 'treino');
+  startList(base, disc, mode);
+}
+
+function startList(list, titulo, mode) {
+  if (!list.length) { alert('Nenhuma questão para esta seleção.'); return; }
+  quiz = { disc: titulo, mode, items: buildItems(list), i: 0 };
   persistSession();
   renderQuiz();
 }
@@ -176,32 +249,27 @@ function persistSession() {
 function resumeQuiz() {
   const s = store.session;
   if (!s) return;
-  const items = s.items.map(it => ({ ...it }));
-  quiz = { disc: s.disc, mode: s.mode, items, i: Math.min(s.i, items.length - 1) };
+  quiz = { disc: s.disc, mode: s.mode, items: s.items.map(it => ({ ...it })), i: Math.min(s.i, s.items.length - 1) };
   renderQuiz();
 }
 
 function recordAnswer(item, reveal) {
   const q = byId[item.id];
+  const prev = store.answers[q.id] || {};
   store.answers[q.id] = {
     sel: item.sel,
     ok: reveal ? item.sel === q.c : null,
-    ts: new Date().toISOString()
+    ts: new Date().toISOString(),
+    tent: (prev.tent || 0) + 1
   };
 }
 
 function choose(k) {
   const it = quiz.items[quiz.i];
-  const q = byId[it.id];
   if (it.done) return;
   it.sel = k;
-
-  if (quiz.mode === 'treino') {
-    it.done = true;
-    recordAnswer(it, true);
-  } else {
-    recordAnswer(it, false);
-  }
+  if (quiz.mode === 'treino') { it.done = true; recordAnswer(it, true); }
+  else recordAnswer(it, false);
   persistSession();
   renderQuiz();
 }
@@ -213,9 +281,7 @@ function next() {
 function prev() { if (quiz.i > 0) { quiz.i--; persistSession(); renderQuiz(); } }
 
 function finish() {
-  // registra respostas pendentes da prova
   for (const it of quiz.items) {
-    const q = byId[it.id];
     if (!it.done) { it.done = true; recordAnswer(it, true); }
   }
   persistSession();
@@ -255,6 +321,8 @@ function renderQuiz() {
       </div>`;
   }
 
+  const tent = (store.answers[q.id] && store.answers[q.id].tent) || 0;
+
   document.getElementById('app').innerHTML = `
     <button class="ghost" id="btn-back">← Disciplinas</button>
     <div class="sticky">
@@ -271,7 +339,9 @@ function renderQuiz() {
       <button class="btn alt" id="btn-prev" ${quiz.i === 0 ? 'disabled' : ''}>← Anterior</button>
       <button class="btn" id="btn-next">${quiz.i === n - 1 ? 'Finalizar' : 'Próxima →'}</button>
     </div>
-    <p class="small muted" style="margin-top:14px">Respondida: ${it.sel != null ? 'sim' : 'não'} · a sessão e o progresso são salvos automaticamente.</p>
+    <p class="small muted" style="margin-top:14px">
+      Respondida: ${it.sel != null ? 'sim' : 'não'} · tentativas nesta questão: ${tent} · sessão e progresso salvos automaticamente.
+    </p>
   `;
 
   document.getElementById('btn-back').onclick = () => { persistSession(); quiz = null; renderHome(); };
@@ -286,6 +356,7 @@ function renderResult() {
   quiz.items.forEach(it => { if (it.sel != null) { ans++; if (it.sel === byId[it.id].c) ok++; } });
   const pct = total ? Math.round(ok / total * 100) : 0;
   const nota = (ok / total * 10).toFixed(1).replace('.', ',');
+  const erradas = quiz.items.filter(it => it.sel == null || it.sel !== byId[it.id].c);
 
   const linhas = quiz.items.map((it, idx) => {
     const q = byId[it.id];
@@ -300,6 +371,7 @@ function renderResult() {
       <p>${ok} de ${total} certas · nota ${nota}</p>
       <p class="small muted">${esc(quiz.disc)}</p>
     </div>
+    ${erradas.length ? `<button class="btn" id="btn-err-now" style="width:100%;padding:11px">Revisar as ${erradas.length} erradas desta sessão</button>` : ''}
     <div class="card">
       <b>Resultado item a item</b>
       <ul class="clean">${linhas}</ul>
@@ -309,8 +381,13 @@ function renderResult() {
       <button class="btn" id="btn-again">Refazer</button>
     </div>
   `;
+  const disc = quiz.disc; const mode = quiz.mode;
   document.getElementById('btn-home').onclick = () => { store.session = null; save(); quiz = null; renderHome(); };
-  document.getElementById('btn-again').onclick = () => { store.session = null; startQuiz(quiz.disc, quiz.mode); };
+  document.getElementById('btn-again').onclick = () => { store.session = null; startList(BANCO.filter(q => quiz.items.some(it => it.id === q.id)), disc, mode); };
+  if (erradas.length) document.getElementById('btn-err-now').onclick = () => {
+    const ids = erradas.map(it => it.id);
+    startList(BANCO.filter(q => ids.includes(q.id)), disc + ' — erradas', 'treino');
+  };
   store.session = null; save();
 }
 
@@ -323,7 +400,6 @@ function exportBackup() {
   a.click();
   URL.revokeObjectURL(a.href);
 }
-
 function importBackup(file) {
   const r = new FileReader();
   r.onload = () => {
