@@ -164,8 +164,8 @@ function renderHome() {
         <div class="disc-main">
           <div class="disc-name">${esc(d)} <span class="tag">${dia}</span></div>
           <div class="disc-meta">
-            <span>${s.ans}/${s.total} · ${s.ok} certas · ${s.wrong} erradas</span>
-            <span>${p}%</span>
+            <span>${s.ans}/${s.total} respondidas · ${s.ok} certas · ${s.wrong} erradas</span>
+            <span>${s.ans ? Math.round(s.ok / s.ans * 100) : 0}% acerto</span>
           </div>
           <div class="bar"><i style="width:${p}%"></i></div>
         </div>
