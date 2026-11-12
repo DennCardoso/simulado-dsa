@@ -7,3 +7,5 @@ Simulado de questões com contador de progresso persistente (localStorage + back
 - Progresso salvo no navegador; exportação/importação de backup em JSON.
 
 Abra `index.html` ou publique via GitHub Pages.
+
+<!-- rebuild -->
