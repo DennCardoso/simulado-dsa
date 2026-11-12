@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulado DSA — com contador</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <b>Simulado DSA</b>
+      <small>MBA USP/Esalq · 627 questões</small>
+    </div>
+    <div class="top-actions">
+      <button id="btn-export" class="ghost" title="Baixar backup em JSON">↑ Backup</button>
+      <button id="btn-import" class="ghost" title="Restaurar backup">↓ Restaurar</button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <span id="save-status">Progresso salvo automaticamente neste navegador</span>
+</footer>
+
+<input type="file" id="file-import" accept="application/json" hidden>
+<script src="banco.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
