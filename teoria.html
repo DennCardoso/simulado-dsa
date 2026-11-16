@@ -263,6 +263,14 @@ rio que todas sejam positivas.</li>
 <li>Regularização L1/L2; usa gradiente e Hessiana.</li>
 <li>Bagging (Random Forest) reduz variância; boosting (XGBoost) reduz viés.</li>
 </ul>
+<h3 id="regularizacao-l1-e-l2">Regularização L1 e L2</h3>
+<ul>
+<li><strong>L1 (Lasso):</strong> penaliza a soma dos <strong>valores absolutos</strong> <code>Σ|w|</code> → leva alguns coeficientes <strong>exatamente a zero</strong> → <strong>seleção de variáveis</strong>, modelo esparso. No XGBoost: parâmetro <strong><code>alpha</code></strong>.</li>
+<li><strong>L2 (Ridge):</strong> penaliza a soma dos <strong>quadrados</strong> <code>Σw²</code> → <strong>encolhe</strong> os coeficientes para perto de zero, mas <strong>não zera</strong> → reduz variância e lida com multicolinearidade. No XGBoost: parâmetro <strong><code>lambda</code></strong>.</li>
+<li><strong>Elastic Net:</strong> combina L1 + L2.</li>
+<li>No XGBoost, a regularização é aplicada aos <strong>pesos das folhas</strong>.</li>
+</ul>
+<p><strong>Atenção:</strong> L1 <strong>zera</strong> coeficientes; L2 apenas <strong>encolhe</strong>.</p>
 <h3 id="trade-off-vies-variancia">Trade-off viés-variância</h3>
 <ul>
 <li><strong>Viés</strong>: erro por simplificação. Viés alto = <strong>underfitting</strong>: modelo simples demais, erra no treino E no teste.</li>
