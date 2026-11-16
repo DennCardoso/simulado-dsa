@@ -218,6 +218,13 @@ rio que todas sejam positivas.</li>
 <li>Sobredispersão → <strong>binomial negativa</strong>; zeros em excesso → <strong>inflado de zeros</strong>.</li>
 <li>Estimação por <strong>máxima verossimilhança</strong> (iterativa, sem fórmula fechada).</li>
 </ul>
+<h3 id="poisson-como-prever">Poisson — como prever</h3>
+<ul>
+<li>Monte o preditor linear: <code>ln(λ) = β0 + β1·x1 + β2·x2 + ...</code></li>
+<li>Aplique a exponencial: <code>λ = exp(preditor)</code>.</li>
+<li><strong>Dummies:</strong> a categoria de referência vale 0; o coeficiente é relativo a ela (<code>post = 'no'</code> → 0; <code>post = 'yes'</code> → 1).</li>
+<li><code>e^β</code> = fator multiplicativo da contagem esperada.</li>
+</ul>
 <h3 id="superdispersao-em-modelos-de-contagem">Superdispersão em modelos de contagem</h3>
 <ul>
 <li><strong>Superdispersão:</strong> a variância é <strong>maior que a média</strong> (o Poisson assume iguais: <code>Var = média</code>).</li>
