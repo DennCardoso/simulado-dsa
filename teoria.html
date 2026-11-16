@@ -126,6 +126,16 @@ rio que todas sejam positivas.</li>
 <li>Na regressão simples, <code>F = t²</code> (por isso parecem iguais).</li>
 <li>F não diz qual variável é significativa; só que pelo menos uma é.</li>
 </ul>
+<h3 id="box-cox-variavel-dependente">Box-Cox (variável dependente)</h3>
+<ul>
+<li>Transforma Y <strong>positivo</strong>: <code>Y* = (Y^λ − 1)/λ</code> (λ≠0); <code>ln(Y)</code> (λ=0).</li>
+<li><strong>λ estimado por máxima verossimilhança</strong>.</li>
+<li>Objetivos: aproximar a <strong>normalidade dos resíduos</strong>, <strong>estabilizar a variância</strong> (reduzir heterocedasticidade) e melhorar o ajuste.</li>
+<li>Com <strong>λ ≠ 1</strong>, a relação na escala original fica <strong>não linear</strong> — mas o modelo continua <strong>linear nos parâmetros</strong>.</li>
+<li><code>λ = 1</code> → identidade; <code>λ = 0</code> → log natural.</li>
+<li>Para prever na escala original, é preciso <strong>destransformar</strong>.</li>
+</ul>
+<p><strong>Atenção:</strong> Box-Cox não muda a linearidade nos parâmetros; transforma a resposta.</p>
 <h3 id="multicolinearidade">Multicolinearidade</h3>
 <ul>
 <li><code>VIF = 1 / (1 − Rj²)</code>; VIF &gt; 5 (ou 10) é alerta.</li>
