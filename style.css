@@ -12,7 +12,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .brand b{display:block;font-size:1.02rem}
 .brand small{color:var(--muted);font-size:.78rem}
 .top-actions{display:flex;gap:8px}
-.ghost{background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:.82rem;font-weight:600}
+.ghost{background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:.82rem;font-weight:600;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center}
 .ghost:hover{border-color:var(--accent)}
 main{max-width:820px;margin:0 auto;padding:16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teoria — maratona DSA</title>
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#0e1722;--card:#152230;--soft:#1b2b3b;--line:#25384a;--ink:#e8f0f7;--muted:#9fb2c4;--accent:#8fd0f4}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:10;background:#0a121b;border-bottom:1px solid var(--line)}
+nav .in{max-width:860px;margin:0 auto;padding:10px 18px;display:flex;gap:16px;align-items:center}
+nav b{font-size:.95rem;margin-right:auto}
+nav a{font-size:.85rem;text-decoration:none;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:1.6rem;line-height:1.25;margin:.2em 0 .4em}
+h2{font-size:1.25rem;margin:2em 0 .5em;padding-top:.4em;border-top:1px solid var(--line)}
+h3{font-size:1.02rem;margin:1.4em 0 .4em;color:var(--accent)}
+p{margin:.6em 0}
+ul{margin:.4em 0 .9em;padding-left:1.3em}
+li{margin:.25em 0}
+strong{color:#fff}
+code{background:var(--soft);padding:1px 5px;border-radius:5px;font-size:.88em}
+pre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.2em;font-size:.92em}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--soft)}
+blockquote{margin:.8em 0;padding:.6em .9em;border-left:4px solid var(--accent);background:var(--soft);border-radius:6px}
+hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<nav><div class="in">
+  <b>Teoria — maratona DSA</b>
+  <a href="./">Simulado</a>
+  <a href="https://brlogica.com.br/guia_estudos_dsa.php" target="_blank" rel="noopener">Guia</a>
+</div></nav>
+<main>
+<h1 id="teoria-maratona-dsa">Teoria — maratona DSA</h1>
+<p><strong>Como usar:</strong> cada bloco é um ASSUNTO (não um erro). Quando um assunto aparece num simulado, a teoria dele está aqui, resumida. É para consultar antes de responder e revisar na véspera.</p>
+<hr />
+<h2 id="d1-nao-supervisionados">D1 — Não supervisionados</h2>
+<h3 id="k-means-objetivo-e-funcionamento">K-Means — objetivo e funcionamento</h3>
+<ul>
+<li><strong>Objetivo:</strong> minimizar a soma dos quadrados das distâncias de cada ponto ao <strong>centroide do seu cluster</strong> (WCSS / inércia).</li>
+<li><strong>Passos:</strong> escolher K → inicializar centroides → atribuir cada ponto ao centroide mais próximo → recalcular os centroides → repetir até convergir.</li>
+<li><strong>Sensível a:</strong> escala das variáveis, outliers e inicialização (usar k-means++).</li>
+<li><strong>Assume</strong> clusters aproximadamente esféricos e de tamanhos parecidos.</li>
+<li><strong>Escolha de K:</strong> método do cotovelo (elbow) ou silhueta.</li>
+</ul>
+<p><strong>Atenção:</strong> o objetivo é <strong>aproximar</strong> os pontos do seu centroide (compactar o cluster), não afastar clusters.</p>
+<h3 id="pca-autovalores-e-variancia-explicada">PCA — autovalores e variância explicada</h3>
+<ul>
+<li>Na PCA pela <strong>matriz de correlações</strong>, cada variável é padronizada (variância 1) → <strong>variância total = p</strong> (nº de variáveis).</li>
+<li>Cada componente tem um <strong>autovalor λk</strong>.</li>
+<li><strong>Proporção explicada = λk / Σλ</strong> (na correlação, Σλ = p).</li>
+<li><strong>Critério de Kaiser:</strong> manter componentes com <strong>λ &gt; 1</strong>.</li>
+<li>Autovalores são <strong>&gt;= 0</strong> (a matriz de correlação é semidefinida positiva).</li>
+<li>Na <strong>covariância</strong>, a soma dos autovalores = soma das variâncias das variáveis.</li>
+<li>O componente de <strong>maior autovalor</strong> explica a <strong>maior porcentagem de variância</strong> (é o primeiro fator).</li>
+<li>As <strong>cargas</strong> podem ter sinais <strong>positivos e negativos</strong>; não 
+rio que todas sejam positivas.</li>
+<li>O de <strong>menor</strong> autovalor é o <strong>menos</strong> importante (não o maior).</li>
+</ul>
+<p><strong>Atenção:</strong> autovalores não somam zero nem são todos iguais a 1.</p>
+<h3 id="comunalidade-h2-e-cargas-fatoriais">Comunalidade (h²) e cargas fatoriais</h3>
+<ul>
+<li><strong>Carga fatorial:</strong> correlação entre a variável e o fator/componente.</li>
+<li><strong>Comunalidade (h²):</strong> soma dos quadrados das cargas nos fatores retidos = <strong>fração da variância da variável explicada</strong> pelos fatores.</li>
+<li>h² varia de <strong>0 a 1</strong>.</li>
+<li><strong>h² alto</strong> → variável bem representada pelos fatores.</li>
+<li><strong>h² baixo</strong> → pouca variância explicada → <strong>perda de informação</strong> ao reduzir as dimensões.</li>
+<li><strong>Unicidade = 1 − h²</strong> (variância não explicada).</li>
+<li>Critério comum: <strong>h² &lt; 0,5</strong> → variável pouco representada (avaliar exclusão).</li>
+</ul>
+<p><strong>Atenção:</strong> comunalidade baixa = <strong>baixa</strong> representatividade (não alta).</p>
+<h3 id="cluster-hierarquico-metodos-de-encadeamento-linkage">Cluster hierárquico — métodos de encadeamento (linkage)</h3>
+<ul>
+<li><strong>Single (nearest neighbor / vizinho mais próximo):</strong> menor distância entre <strong>quaisquer</strong> pontos dos dois grupos → tende ao efeito de <strong>encadeamento</strong> (chaining).</li>
+<li><strong>Complete (farthest neighbor / vizinho mais distante):</strong> maior distância entre os pontos → clusters mais <strong>compactos</strong>.</li>
+<li><strong>Average (UPGMA):</strong> distância <strong>média</strong> entre os pontos dos clusters.</li>
+<li><strong>Ward:</strong> minimiza o aumento da <strong>variância intragrupo</strong> (o mais usado).</li>
+<li><strong>Centroid / median:</strong> baseados na distância entre centroides.</li>
+</ul>
+<p><strong>Atenção:</strong> o método de encadeamento <strong>altera o dendrograma e os agrupamentos</strong>. Mas, no <strong>estágio zero</strong>, cada observação é um cluster (n clusters), independentemente do método.</p>
+<h3 id="dendrograma-cluster-hierarquico-aglomerativo">Dendrograma (cluster hierárquico aglomerativo)</h3>
+<ul>
+<li>Começa com <strong>n clusters</strong> (cada observação) e termina com <strong>1</strong>.</li>
+<li>Corte horizontal: <strong>nº de interseções = nº de clusters</strong> naquele nível.</li>
+<li>Não define o k exato; ajuda a escolher (maior salto vertical).</li>
+</ul>
+<h3 id="analise-de-correspondencia-eixos-e-inercia">Análise de Correspondência — eixos e inércia</h3>
+<ul>
+<li>A AC decompõe a <strong>inércia</strong> (associação) em <strong>dimensões</strong>, via SVD da matriz de resíduos padronizados.</li>
+<li>Cada dimensão tem um <strong>autovalor</strong>: quanto maior, mais inércia ela explica.</li>
+<li>O <strong>mapa perceptual</strong> usa as <strong>duas primeiras dimensões</strong> (os dois maiores autovalores).</li>
+<li>O output mostra a <strong>% de inércia explicada</strong> por eixo.</li>
+<li>Os eixos <strong>não têm significado intrínseco</strong>: interpretam-se pelas categorias opostas nos extremos.</li>
+</ul>
+<p><strong>Atenção:</strong> os eixos não são contagens, número de categorias nem significância estatística.</p>
+<h3 id="acm-analise-de-correspondencia-multipla">ACM — Análise de Correspondência Múltipla</h3>
+<ul>
+<li>Para <strong>3+ variáveis categóricas</strong>; usa distância <strong>qui-quadrado</strong>.</li>
+<li>Proximidade no mapa = <strong>associação</strong> entre categorias.</li>
+<li><strong>Viabilidade:</strong> cada variável deve ter associação significativa com pelo menos uma outra (qui-quadrado). Variável isolada não entra.</li>
+<li>Não usa Z-score (isso é PCA); não é teste de hipótese.</li>
+</ul>
+<hr />
+<h2 id="d2-regressao-ols">D2 — Regressão OLS</h2>
+<h3 id="criterio-do-ols">Critério do OLS</h3>
+<ul>
+<li>Minimiza a soma dos quadrados dos resíduos: <code>Σe²</code>.</li>
+<li>Com intercepto, <code>Σe = 0</code> é consequência (não objetivo).</li>
+<li>Pegadinha: <code>SSE = 0</code> significa ajuste perfeito; maximizar SSE é o oposto do OLS.</li>
+</ul>
+<h3 id="teste-f-vs-teste-t">Teste F vs teste t</h3>
+<ul>
+<li><strong>F</strong>: conjunto (H0: todos os betas = 0). <strong>t</strong>: individual (H0: beta_j = 0).</li>
+<li>Na regressão simples, <code>F = t²</code> (por isso parecem iguais).</li>
+<li>F não diz qual variável é significativa; só que pelo menos uma é.</li>
+</ul>
+<h3 id="multicolinearidade">Multicolinearidade</h3>
+<ul>
+<li><code>VIF = 1 / (1 − Rj²)</code>; VIF &gt; 5 (ou 10) é alerta.</li>
+<li>Stepwise reduz redundância como efeito colateral; recalcular o VIF depois.</li>
+</ul>
+<h3 id="causalidade">Causalidade</h3>
+<ul>
+<li>Regressão mede <strong>associação</strong>, não causa.</li>
+<li>Confundidores: variável omitida, causalidade reversa, seleção.</li>
+</ul>
+<hr />
+<h2 id="d3-maxima-verossimilhanca">D3 — Máxima verossimilhança</h2>
+<h3 id="modelo-multinivel">Modelo multinível</h3>
+<ul>
+<li><strong>Nível 1</strong> = observação (medida repetida); <strong>nível 2</strong> = indivíduo; <strong>nível 3</strong> = escola/empresa.</li>
+<li>Em <strong>medidas repetidas</strong>, o nível 1 representa a <strong>evolução temporal</strong> (as medições ao longo do tempo) do mesmo indivíduo.</li>
+<li>Ignorar a dependência entre observações do mesmo grupo <strong>subestima os erros-padrão</strong>.</li>
+<li><strong>Estimação por máxima verossimilhança (ML/REML)</strong>, não por OLS (o OLS pressupõe independência).</li>
+<li>ICC: quanto as observações do mesmo grupo se parecem (0 a 1).</li>
+</ul>
+<h3 id="dados-de-contagem">Dados de contagem</h3>
+<ul>
+<li>Contagem = inteiro &gt;= 0, responde "quantos".</li>
+<li>Faixa de renda com rótulos = <strong>categórica</strong>, não contagem.</li>
+</ul>
+<h3 id="escolha-do-modelo-pela-variavel-dependente">Escolha do modelo pela variável dependente</h3>
+<table>
+<thead>
+<tr>
+<th>Dependente</th>
+<th>Modelo</th>
+<th>Estrutura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binária (0/1)</td>
+<td>Logística binária</td>
+<td>1 logito</td>
+</tr>
+<tr>
+<td>3+ categorias sem ordem</td>
+<td>Logística multinomial</td>
+<td><strong>M − 1 logitos</strong></td>
+</tr>
+<tr>
+<td>Contagem (0, 1, 2, …)</td>
+<td><strong>Poisson</strong></td>
+<td><code>ln(λ) = Xβ</code></td>
+</tr>
+<tr>
+<td>Contagem com Var &gt; média</td>
+<td>Binomial negativa</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Contagem com excesso de zeros</td>
+<td>Inflado de zeros</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Atenção:</strong> Poisson <strong>não</strong> serve para dependente binária nem com 3 categorias. E <strong>M − 1 logitos</strong> é estrutura da <strong>multinomial</strong>, não do Poisson.</p>
+<h3 id="poisson">Poisson</h3>
+<ul>
+<li><code>ln(λ) = Xβ</code>; <code>E[Y] = Var[Y] = λ</code>.</li>
+<li><code>e^β</code> = fator multiplicativo da contagem esperada.</li>
+<li>Sobredispersão → <strong>binomial negativa</strong>; zeros em excesso → <strong>inflado de zeros</strong>.</li>
+<li>Estimação por <strong>máxima verossimilhança</strong> (iterativa, sem fórmula fechada).</li>
+</ul>
+<h3 id="superdispersao-em-modelos-de-contagem">Superdispersão em modelos de contagem</h3>
+<ul>
+<li><strong>Superdispersão:</strong> a variância é <strong>maior que a média</strong> (o Poisson assume iguais: <code>Var = média</code>).</li>
+<li><strong>Teste:</strong> Cameron &amp; Trivedi (regressão auxiliar). H0: <strong>equidispersão</strong> (variância = média).</li>
+<li><strong>No Python (conforme o material do curso):</strong> função <strong><code>overdisp</code></strong>, pacote <strong><code>statsmodels.tests</code></strong>.</li>
+<li><strong>Checagem prática:</strong> razão Pearson chi²/gl &gt; 1 sugere superdispersão.</li>
+<li><strong>Consequência:</strong> erros-padrão do Poisson ficam subestimados → usar <strong>quase-Poisson</strong> ou <strong>binomial negativa</strong>.</li>
+</ul>
+<p><strong>Atenção:</strong> o nome da função é específico do material (<code>overdisp</code>); não confundir com "superdisp"/"hyperdisp".</p>
+<h3 id="inflacao-de-zeros-teste-de-vuong">Inflação de zeros — teste de Vuong</h3>
+<ul>
+<li>Modelos <strong>inflados de zeros</strong> (ZIP, ZINB) combinam dois processos: um <strong>binário</strong> (zero estrutural) e um de <strong>contagem</strong>.</li>
+<li>Para comparar um modelo inflado com o modelo de contagem padrão (modelos <strong>não aninhados</strong>), usa-se o <strong>teste de Vuong</strong>.</li>
+<li>H0: os dois modelos são <strong>equivalentes</strong>. Rejeitar indica que um é melhor; o sinal da estatística aponta qual.</li>
+<li><strong>Cameron &amp; Trivedi:</strong> testa <strong>superdispersão</strong>, não inflação de zeros.</li>
+<li><strong>Erlang:</strong> distribuição (soma de exponenciais), não teste de comparação.</li>
+<li><strong>Lambert:</strong> autor que propôs o modelo ZIP; não é um teste.</li>
+</ul>
+<p><strong>Atenção:</strong> Vuong = zeros; Cameron-Trivedi = superdispersão.</p>
+<h3 id="regressao-logistica-binaria-variavel-resposta">Regressão logística binária — variável resposta</h3>
+<ul>
+<li>Y <strong>binária</strong> (0/1) → distribuição <strong>Bernoulli</strong>.</li>
+<li>É uma variável <strong>qualitativa (categórica)</strong>, mesmo codificada como 0 e 1. A codificação numérica <strong>não</strong> a transforma em quantitativa.</li>
+<li><strong>Mais de duas categorias</strong> → logística <strong>multinomial</strong> (sem ordem) ou <strong>ordinal</strong> (com ordem).</li>
+<li>Modela <code>P(Y=1)</code> por meio do logito: <code>ln(p/(1-p)) = Xβ</code>.</li>
+</ul>
+<h3 id="logistica-e-multinomial">Logística e multinomial</h3>
+<ul>
+<li>Binária: <strong>1 logito</strong>. M categorias: <strong>M − 1 logitos</strong>.</li>
+<li><code>logito = ln(p / (1−p))</code>; <code>e^β</code> = odds ratio.</li>
+</ul>
+<h3 id="matriz-de-confusao-metricas">Matriz de confusão — métricas</h3>
+<ul>
+<li><strong>VP</strong> (verdadeiro positivo), <strong>VN</strong> (verdadeiro negativo), <strong>FP</strong> (falso positivo), <strong>FN</strong> (falso negativo).</li>
+<li><strong>Sensibilidade / Recall</strong> = <code>VP / (VP + FN)</code> → dos <strong>positivos reais</strong>, quantos foram detectados.</li>
+<li><strong>Especificidade</strong> = <code>VN / (VN + FP)</code> → dos <strong>negativos reais</strong>, quantos foram corretamente identificados.</li>
+<li><strong>Precisão / VPP</strong> = <code>VP / (VP + FP)</code> → dos <strong>positivos previstos</strong>, quantos estão certos.</li>
+<li><strong>VPN</strong> = <code>VN / (VN + FN)</code> → dos <strong>negativos previstos</strong>, quantos estão certos.</li>
+<li><strong>Acurácia</strong> = <code>(VP + VN) / total</code>.</li>
+<li><strong>F1</strong> = <code>2 · (precisão · recall) / (precisão + recall)</code>.</li>
+</ul>
+<p><strong>Atenção:</strong> especificidade usa o denominador dos <strong>negativos reais</strong> (VN + FP). Não confundir com VPN, que usa os <strong>negativos previstos</strong> (VN + FN).</p>
+<hr />
+<h2 id="d4-ml-adicional">D4 — ML adicional</h2>
+<h3 id="xgboost">XGBoost</h3>
+<ul>
+<li>Gradient boosting <strong>sequencial</strong> de árvores; cada árvore corrige o erro da anterior.</li>
+<li>Regularização L1/L2; usa gradiente e Hessiana.</li>
+<li>Bagging (Random Forest) reduz variância; boosting (XGBoost) reduz viés.</li>
+</ul>
+<h3 id="trade-off-vies-variancia">Trade-off viés-variância</h3>
+<ul>
+<li><strong>Viés</strong>: erro por simplificação. Viés alto = <strong>underfitting</strong>: modelo simples demais, erra no treino E no teste.</li>
+<li><strong>Variância</strong>: erro por sensibilidade aos dados de treino. Variância alta = <strong>overfitting</strong>: vai bem no treino, mal no teste.</li>
+<li>Erro total = viés² + variância + ruído irredutível.</li>
+<li>Aumentar complexidade: ↓viés, ↑variância.</li>
+<li>Regularização ↓variância; mais dados ↓variância; bagging ↓variância; boosting ↓viés.</li>
+<li>Pegadinha: viés alto = modelo <strong>simples</strong> (não flexível).</li>
+</ul>
+<h3 id="bagging-e-oob-out-of-bag">Bagging e OOB (out-of-bag)</h3>
+<ul>
+<li>Bagging treina várias árvores em <strong>amostras bootstrap</strong> (sorteio com reposição).</li>
+<li>Em cada amostra, ~<strong>63,2%</strong> das observações entram; ~<strong>36,8%</strong> ficam de fora = <strong>OOB</strong>.</li>
+<li>O OOB de uma árvore são os registros que ela <strong>não viu</strong> no treino → servem de <strong>validação embutida</strong>.</li>
+<li>Juntando as previsões OOB de todas as árvores, obtém-se o <strong>erro OOB</strong> (estimativa de generalização sem separar conjunto de validação).</li>
+<li>Também serve para <strong>importância de variáveis</strong> (OOB importance) e ajuste de hiperparâmetros.</li>
+<li>Não são ruído nem duplicatas; <strong>não</strong> devem ser reinseridos no treino.</li>
+</ul>
+<p><strong>Atenção:</strong> OOB ≠ duplicata; OOB ≠ registro descartado.</p>
+<h3 id="pre-processamento-de-texto-para-redes-neurais">Pré-processamento de texto para redes neurais</h3>
+<ul>
+<li><strong>Tokenização:</strong> divide o texto em tokens (palavras, subpalavras).</li>
+<li><strong>Vocabulário/indexação:</strong> cada token recebe um número inteiro.</li>
+<li><strong>Padding:</strong> completa as sequências mais curtas com um índice reservado (<strong>0</strong>) para que todas tenham o mesmo comprimento.</li>
+<li><strong>Truncamento:</strong> corta as sequências mais longas.</li>
+<li><strong>Tensor de entrada:</strong> matriz com formato (lote × comprimento).</li>
+<li><strong>Máscara:</strong> faz o modelo ignorar os tokens de padding no cálculo.</li>
+</ul>
+<p><strong>Atenção:</strong> padding ≠ tokenização; padding ≠ remoção de palavras raras; truncamento é o oposto de padding.</p>
+<h3 id="self-attention-q-k-v">Self-attention — Q, K, V</h3>
+<ul>
+<li><strong>Query (Q):</strong> o que o token <strong>procura</strong> nos demais (a pergunta que ele faz).</li>
+<li><strong>Key (K):</strong> o que o token <strong>oferece</strong> para ser comparado (o rótulo/índice).</li>
+<li><strong>Value (V):</strong> o <strong>conteúdo</strong> que o token entrega e que será combinado na saída.</li>
+<li>Cálculo: <code>scores = q · k</code> → <code>softmax</code> → saída = soma ponderada dos <strong>values</strong>.</li>
+</ul>
+<p><strong>Analogia (busca em biblioteca):</strong> Q = sua busca; K = título/índice do livro; V = conteúdo do livro.</p>
+<p><strong>Atenção:</strong> Q pergunta; K responde "quem sou"; V entrega o conteúdo. Não trocar Q por V.</p>
+<h3 id="keras-textvectorization-texto-numeros">Keras — TextVectorization (texto → números)</h3>
+<ul>
+<li>Redes neurais não processam texto bruto: precisam de números. A camada <strong>TextVectorization</strong> faz essa ponte.</li>
+<li>O que ela faz: <strong>padroniza</strong> (ex.: minúsculas), <strong>tokeniza</strong>, monta o <strong>vocabulário</strong> e converte cada token em um <strong>índice inteiro</strong>, devolvendo sequências de comprimento fixo.</li>
+<li>Configurações comuns: <code>max_tokens</code> (tamanho do vocabulário), <code>output_sequence_length</code> (comprimento fixo, já aplicando padding/truncamento) e <code>output_mode</code> (<code>int</code>, <code>multi_hot</code>, <code>tf_idf</code>).</li>
+<li>Fluxo: criar a camada → <strong><code>adapt()</code></strong> nos textos de treino (aprende o vocabulário) → usar a camada para transformar treino e teste → alimentar Embedding/Dense.</li>
+</ul>
+<p><strong>Sobre o <code>adapt()</code>:</strong> é a etapa que <strong>constrói o vocabulário</strong> a partir dos textos. Deve rodar <strong>somente no treino</strong> (evita data leakage); depois a camada transforma os dois conjuntos com o mesmo vocabulário. Não treina pesos, não calcula acurácia, não salva modelo.</p>
+<p><strong>Atenção:</strong> adaptar no dataset inteiro (treino + teste) = vazamento de informação.</p>
+<h3 id="linha-do-tempo-do-deep-learning">Linha do tempo do Deep Learning</h3>
+<ul>
+<li><strong>1958</strong> — Perceptron (Rosenblatt).</li>
+<li><strong>1974–1986</strong> — popularização do backpropagation (Werbos em 1974; Rumelhart, Hinton e Williams em 1986).</li>
+<li><strong>2012</strong> — AlexNet vence a competição ImageNet (marco do deep learning moderno).</li>
+<li><strong>2016</strong> — AlphaGo derrota um campeão mundial de Go.</li>
+</ul>
+<p><strong>Atenção:</strong> em questões de associação, confira a <strong>direção</strong> pedida (de cima para baixo na coluna de períodos, por exemplo).</p>
+<h3 id="perceptron-e-mlp-separabilidade-e-ativacoes">Perceptron e MLP — separabilidade e ativações</h3>
+<ul>
+<li><strong>Perceptron:</strong> soma ponderada das entradas + <strong>função degrau</strong> → saída binária. Aprende apenas problemas <strong>linearmente separáveis</strong>.</li>
+<li><strong>XOR não é linearmente separável</strong> → um perceptron simples <strong>não</strong> resolve. Precisa de <strong>camada oculta</strong> (MLP).</li>
+<li><strong>MLP:</strong> camadas ocultas + ativações <strong>contínuas</strong> (sigmoid, tanh, ReLU) → funções diferenciáveis → permite <strong>backpropagation</strong> (gradiente).</li>
+<li>A função <strong>degrau não é diferenciável</strong>; por isso não é usada no treino por gradiente.</li>
+</ul>
+<p><strong>Atenção:</strong> não atribuir XOR ao perceptron simples; o perceptron não resolve qualquer classificação.</p>
+<h3 id="xgboost-hiperparametros-e-diversidade">XGBoost — hiperparâmetros e diversidade</h3>
+<ul>
+<li><strong><code>colsample_bytree</code></strong>: fração de <strong>colunas (variáveis)</strong> disponível para cada árvore → <strong>aumenta a diversidade</strong> do ensemble (análogo ao <code>max_features</code> do Random Forest).</li>
+<li><strong><code>subsample</code></strong>: fração de <strong>linhas</strong> por árvore → também aumenta diversidade.</li>
+<li><strong><code>colsample_bylevel</code> / <code>colsample_bynode</code></strong>: amostragem de colunas por nível/nó.</li>
+<li><strong><code>max_depth</code></strong>: profundidade da árvore (complexidade), <strong>não</strong> controla a diversidade de variáveis.</li>
+<li><strong><code>min_child_weight</code></strong>: regularização (exigência mínima para dividir um nó).</li>
+<li><strong><code>n_estimators</code> + <code>learning_rate</code></strong>: quantidade de árvores e tamanho do passo.</li>
+</ul>
+<p><strong>Atenção:</strong> <code>subsample</code> = linhas; <code>colsample_bytree</code> = colunas. Não confundir.</p>
+<hr />
+<h2 id="d5-tecnicas">D5 — Técnicas</h2>
+<h3 id="escalonamento-de-variaveis-scalers">Escalonamento de variáveis (scalers)</h3>
+<ul>
+<li><strong>StandardScaler:</strong> <code>(x − média) / desvio-padrão</code>. Sensível a outliers (média e desvio são afetados).</li>
+<li><strong>MinMaxScaler:</strong> <code>(x − min) / (max − min)</code> → intervalo [0,1]. Sensível a outliers (min e max).</li>
+<li><strong>MaxAbsScaler:</strong> <code>x / max|x|</code> → [-1,1]. Sensível ao máximo.</li>
+<li><strong>RobustScaler:</strong> <code>(x − mediana) / IQR</code>. <strong>Resistente a outliers</strong> (mediana e IQR são robustos).</li>
+<li><strong>Normalizer:</strong> normaliza cada <strong>amostra (linha)</strong> para norma unitária (L1/L2) — <strong>não</strong> subtrai média nem divide por desvio por feature.</li>
+</ul>
+<p><strong>Atenção:</strong> a descrição "subtrai a média e divide pelo desvio" é do <strong>StandardScaler</strong>, não do Normalizer. Com assimetria forte e outliers, prefira <strong>RobustScaler</strong>.</p>
+<h3 id="social-network-analysis">Social Network Analysis</h3>
+<ul>
+<li>Densidade = arestas existentes / possíveis; possíveis = <code>n(n−1)/2</code> (não direcionado).</li>
+<li><strong>Closeness no curso = distância média</strong> (menor = mais central). No padrão internacional é o inverso.</li>
+<li>Excentricidade = maior distância do nó; raio = mínima; diâmetro = máxima.</li>
+<li>Modularidade = qualidade da partição (não é o número de comunidades).</li>
+</ul>
+<h3 id="pesquisa-operacional">Pesquisa Operacional</h3>
+<ul>
+<li><strong>PL</strong>: variáveis contínuas. <strong>PLI</strong>: todas inteiras. <strong>PLIM</strong>: mistas.</li>
+<li>Simplex percorre <strong>vértices</strong>; enumeração testa <strong>todas as soluções</strong>.</li>
+<li><strong>Branch-and-bound</strong> resolve inteira; <strong>relaxação</strong> = limite (max: relaxado &gt;= inteiro).</li>
+</ul>
+<h3 id="monte-carlo">Monte Carlo</h3>
+<ul>
+<li><code>P(evento) ≈ favoráveis / N</code>; erro cai ~<code>1/√N</code>.</li>
+<li>Quantifica a incerteza; não elimina.</li>
+</ul>
+<h3 id="series-temporais">Séries temporais</h3>
+<ul>
+<li>Componentes: tendência, sazonalidade (período fixo), ciclo (sem período fixo), irregular.</li>
+<li>SES (α), Holt (+β), Holt-Winters (+γ).</li>
+<li>ARIMA(p,d,q); ACF corta no MA, PACF corta no AR.</li>
+<li>Testes: <strong>ADF</strong> (estacionariedade), <strong>Ljung-Box</strong> (autocorrelação), <strong>K-S/Jarque-Bera</strong> (normalidade), <strong>AIC/BIC</strong> (seleção).</li>
+</ul>
+<h3 id="var">VaR</h3>
+<ul>
+<li>VaR é um <strong>quantil</strong>: "há ~5% de chance de a perda superar X".</li>
+<li>Não é a perda máxima nem a perda esperada.</li>
+<li>Perda esperada = P(evento) × custo.</li>
+</ul>
+<hr />
+<h2 id="d6-gestao">D6 — Gestão</h2>
+<p>(a preencher conforme os erros)</p>
+</main>
+</body>
+</html>
