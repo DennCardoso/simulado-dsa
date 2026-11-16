@@ -340,16 +340,59 @@ rio que todas sejam positivas.</li>
 <li>A função <strong>degrau não é diferenciável</strong>; por isso não é usada no treino por gradiente.</li>
 </ul>
 <p><strong>Atenção:</strong> não atribuir XOR ao perceptron simples; o perceptron não resolve qualquer classificação.</p>
-<h3 id="xgboost-hiperparametros-e-diversidade">XGBoost — hiperparâmetros e diversidade</h3>
+<h3 id="xgboost-hiperparametros-principais">XGBoost — hiperparâmetros principais</h3>
+<table>
+<thead>
+<tr>
+<th>Hiperparâmetro</th>
+<th>O que controla</th>
+<th>Efeito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>n_estimators</code></strong></td>
+<td>nº de árvores</td>
+<td>mais árvores → mais ajuste (risco de overfitting)</td>
+</tr>
+<tr>
+<td><strong><code>learning_rate</code> (eta)</strong></td>
+<td>taxa de aprendizado</td>
+<td>menor → precisa de mais árvores; maior → converge rápido, pode instabilizar</td>
+</tr>
+<tr>
+<td><strong><code>max_depth</code></strong></td>
+<td>profundidade máxima</td>
+<td>maior → modelo complexo, overfitting</td>
+</tr>
+<tr>
+<td><strong><code>min_child_weight</code></strong></td>
+<td>peso mínimo para dividir um nó</td>
+<td>maior → mais conservador</td>
+</tr>
+<tr>
+<td><strong><code>subsample</code></strong></td>
+<td>fração de <strong>linhas</strong> por árvore</td>
+<td>&lt; 1 → mais diversidade/regularização</td>
+</tr>
+<tr>
+<td><strong><code>colsample_bytree</code></strong></td>
+<td>fração de <strong>colunas</strong> por árvore</td>
+<td>&lt; 1 → mais diversidade/regularização</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li><strong><code>colsample_bytree</code></strong>: fração de <strong>colunas (variáveis)</strong> disponível para cada árvore → <strong>aumenta a diversidade</strong> do ensemble (análogo ao <code>max_features</code> do Random Forest).</li>
-<li><strong><code>subsample</code></strong>: fração de <strong>linhas</strong> por árvore → também aumenta diversidade.</li>
-<li><strong><code>colsample_bylevel</code> / <code>colsample_bynode</code></strong>: amostragem de colunas por nível/nó.</li>
-<li><strong><code>max_depth</code></strong>: profundidade da árvore (complexidade), <strong>não</strong> controla a diversidade de variáveis.</li>
-<li><strong><code>min_child_weight</code></strong>: regularização (exigência mínima para dividir um nó).</li>
-<li><strong><code>n_estimators</code> + <code>learning_rate</code></strong>: quantidade de árvores e tamanho do passo.</li>
+<li><strong><code>colsample_bylevel</code> / <code>colsample_bynode</code>:</strong> amostragem de colunas por nível/nó.</li>
+<li><strong><code>gamma</code>:</strong> redução mínima de perda para permitir uma divisão (maior = mais conservador).</li>
+<li><strong><code>lambda</code> / <code>alpha</code>:</strong> regularização L2 / L1.</li>
+<li><strong><code>objective</code>:</strong> tarefa (<code>reg:squarederror</code>, <code>binary:logistic</code>, <code>count:poisson</code>, <code>multi:softprob</code>).</li>
+<li><strong><code>eval_metric</code>:</strong> métrica de avaliação (rmse, logloss, auc…).</li>
+<li><strong><code>early_stopping_rounds</code>:</strong> para o treino quando a validação para de melhorar.</li>
+<li><strong><code>scale_pos_weight</code>:</strong> classes desbalanceadas.</li>
 </ul>
-<p><strong>Atenção:</strong> <code>subsample</code> = linhas; <code>colsample_bytree</code> = colunas. Não confundir.</p>
+<p><strong>Ordem prática de ajuste:</strong> (1) <code>learning_rate</code> + <code>n_estimators</code>; (2) <code>max_depth</code> + <code>min_child_weight</code>; (3) <code>subsample</code> + <code>colsample_bytree</code>; (4) <code>gamma</code>; (5) <code>lambda</code>/<code>alpha</code>.</p>
+<p><strong>Atenção:</strong> <code>subsample</code> = <strong>linhas</strong>; <code>colsample_bytree</code> = <strong>colunas</strong>. <code>learning_rate</code> baixo exige mais árvores. Não confundir.</p>
 <hr />
 <h2 id="d5-tecnicas">D5 — Técnicas</h2>
 <h3 id="escalonamento-de-variaveis-scalers">Escalonamento de variáveis (scalers)</h3>
