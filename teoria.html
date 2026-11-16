@@ -152,6 +152,12 @@ rio que todas sejam positivas.</li>
 - <strong>Efeitos aleatórios:</strong> <code>ν0j</code> (intercepto aleatório do grupo), <code>ν1j</code> (inclinação aleatória de X) e <code>εij</code> (erro de nível 1).
 - Se a <strong>variância dos aleatórios &gt; 0</strong> → há dependência intragrupo → <strong>OLS não é adequado</strong> (erros-padrão errados); usar <strong>ML/REML</strong>.
 - Se a variância dos aleatórios = 0 → o modelo colapsa para o <strong>OLS</strong>.</p>
+<p><strong>Leitura do gráfico (retas por grupo):</strong>
+- Retas com <strong>interceptos diferentes</strong> → variância do <strong>intercepto aleatório</strong> (ν0) &gt; 0.
+- Retas com <strong>inclinações diferentes</strong> (não paralelas) → variância da <strong>inclinação aleatória</strong> (ν1) &gt; 0.
+- Retas <strong>paralelas</strong> → só intercepto aleatório.
+- Retas com <strong>mesmo intercepto</strong> e inclinações diferentes → só inclinação aleatória.
+- Retas <strong>coincidentes</strong> → sem efeitos aleatórios (OLS/GLM basta).</p>
 <h3 id="dados-de-contagem">Dados de contagem</h3>
 <ul>
 <li>Contagem = inteiro &gt;= 0, responde "quantos".</li>
