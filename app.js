@@ -189,6 +189,18 @@ function renderHome() {
     ${geral.wrong ? `<button class="btn" id="btn-review-all" style="width:100%;padding:11px">Revisar todas as erradas (${geral.wrong})</button>` : ''}
 
     <div class="card">
+      <b>Provas finais</b>
+      <p class="small muted" style="margin:6px 0 10px">
+        <b>P1 — Conhecimentos:</b> 10 questões (2 por disciplina, áreas 1–5).<br>
+        <b>P2 — Interpretação:</b> 5 questões de Gestão em Data Science.
+      </p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="btn-p1" style="flex:1;padding:11px">P1 — Conhecimentos (10)</button>
+        <button class="btn alt" id="btn-p2" style="flex:1;padding:11px">P2 — Interpretação (5)</button>
+      </div>
+    </div>
+
+    <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
         <b>Disciplinas</b>
         <button class="ghost" id="btn-reset">Zerar progresso</button>
@@ -203,6 +215,8 @@ function renderHome() {
   document.querySelectorAll('[data-dia]').forEach(b => b.onclick = () => { filtroDia = b.dataset.dia; renderHome(); });
   document.querySelectorAll('[data-start]').forEach(b => b.onclick = () => startDisc(b.dataset.start, b.dataset.mode));
   document.getElementById('btn-reset').onclick = resetAll;
+  document.getElementById('btn-p1').onclick = startP1;
+  document.getElementById('btn-p2').onclick = startP2;
   if (geral.wrong) document.getElementById('btn-review-all').onclick = () => startList(BANCO.filter(isWrong), 'Revisão — todas as erradas', 'treino');
   if (store.session) {
     document.getElementById('btn-resume').onclick = resumeQuiz;
@@ -234,6 +248,24 @@ function startList(list, titulo, mode) {
   quiz = { disc: titulo, mode, items: buildItems(list), i: 0 };
   persistSession();
   renderQuiz();
+}
+
+/* P1 — Conhecimentos: 2 questões por área (1 a 5) = 10 */
+function startP1() {
+  const partes = [];
+  for (let a = 1; a <= 5; a++) {
+    const pool = BANCO.filter(q => q.a === a);
+    partes.push(...shuffle(pool).slice(0, 2));
+  }
+  startList(shuffle(partes), 'P1 — Prova de Conhecimentos', 'prova');
+}
+
+/* P2 — Interpretação: 5 questões de Gestão (área 6), priorizando enunciados longos */
+function startP2() {
+  const pool = BANCO.filter(q => q.a === 6);
+  const longas = pool.filter(q => q.q.length >= 120);
+  const base = longas.length >= 5 ? longas : pool;
+  startList(shuffle(base).slice(0, 5), 'P2 — Prova de Interpretação', 'prova');
 }
 
 function persistSession() {
