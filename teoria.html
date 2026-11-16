@@ -205,6 +205,17 @@ rio que todas sejam positivas.</li>
 <li><strong>Consequência:</strong> erros-padrão do Poisson ficam subestimados → usar <strong>quase-Poisson</strong> ou <strong>binomial negativa</strong>.</li>
 </ul>
 <p><strong>Atenção:</strong> o nome da função é específico do material (<code>overdisp</code>); não confundir com "superdisp"/"hyperdisp".</p>
+<h3 id="poisson-inflado-de-zeros-zip">Poisson inflado de zeros (ZIP)</h3>
+<ul>
+<li><strong>Dois processos:</strong> (1) um <strong>binário/logit</strong> que decide se o zero é <strong>estrutural</strong>; (2) um de <strong>contagem Poisson</strong> que gera as contagens (inclusive zeros "de contagem").</li>
+<li><code>P(Y = 0) = p + (1 − p)·e^(−λ)</code></li>
+<li><code>P(Y = m &gt; 0) = (1 − p)·e^(−λ)·λ^m / m!</code></li>
+<li><code>p</code> = probabilidade de zero estrutural (via logit); <code>λ</code> = média do processo de contagem.</li>
+<li>Preditores podem ser <strong>quantitativos ou qualitativos</strong> (dummies) — não é restrito a qualitativas.</li>
+<li>Comparação com Poisson/NB: <strong>teste de Vuong</strong>.</li>
+<li><strong>Hurdle</strong> é diferente: o processo binário separa zero de positivo, e a contagem é truncada em zero.</li>
+</ul>
+<p><strong>Atenção:</strong> no ZIP, o zero tem <strong>duas origens</strong> (estrutural + contagem). E o modelo não serve "só para preditoras qualitativas".</p>
 <h3 id="inflacao-de-zeros-teste-de-vuong">Inflação de zeros — teste de Vuong</h3>
 <ul>
 <li>Modelos <strong>inflados de zeros</strong> (ZIP, ZINB) combinam dois processos: um <strong>binário</strong> (zero estrutural) e um de <strong>contagem</strong>.</li>
