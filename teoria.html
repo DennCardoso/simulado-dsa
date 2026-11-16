@@ -382,6 +382,14 @@ rio que todas sejam positivas.</li>
 <li><strong>RI (Random Index):</strong> valor tabelado por Saaty para matrizes de ordem <strong>1 até 15</strong>.</li>
 <li>Critério usual: <strong>CR &lt;= 0,10</strong> → julgamentos consistentes.</li>
 </ul>
+<h3 id="pli-solucao-grafica-e-inteira">PLI — solução gráfica e inteira</h3>
+<ul>
+<li>Resolve-se a <strong>relaxação linear</strong> (vértices) e depois testam-se os <strong>pontos inteiros viáveis</strong> dentro da região.</li>
+<li>A solução inteira <strong>não</strong> é simplesmente arredondar a contínua: o arredondamento pode violar restrições ou gerar solução subótima.</li>
+<li>Com 2 variáveis, enumere os pares inteiros viáveis e escolha o melhor na função objetivo.</li>
+<li>Métodos exatos: <strong>branch-and-bound</strong>.</li>
+</ul>
+<p><strong>Atenção:</strong> em PLI, o ótimo pode não estar no vértice contínuo.</p>
 <h3 id="monte-carlo">Monte Carlo</h3>
 <ul>
 <li><code>P(evento) ≈ favoráveis / N</code>; erro cai ~<code>1/√N</code>.</li>
