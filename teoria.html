@@ -146,6 +146,12 @@ rio que todas sejam positivas.</li>
 <li><strong>Estimação por máxima verossimilhança (ML/REML)</strong>, não por OLS (o OLS pressupõe independência).</li>
 <li>ICC: quanto as observações do mesmo grupo se parecem (0 a 1).</li>
 </ul>
+<p><strong>Equação (exemplo com interação cruzada):</strong>
+<code>Yij = γ00 + γ10·Xij + γ01·Wj + γ11·Wj·Xij + ν0j + ν1j·Xij + εij</code>
+- <strong>Efeitos fixos (γ):</strong> intercepto geral, efeito de X (nível 1), efeito de W (nível 2) e a interação W×X.
+- <strong>Efeitos aleatórios:</strong> <code>ν0j</code> (intercepto aleatório do grupo), <code>ν1j</code> (inclinação aleatória de X) e <code>εij</code> (erro de nível 1).
+- Se a <strong>variância dos aleatórios &gt; 0</strong> → há dependência intragrupo → <strong>OLS não é adequado</strong> (erros-padrão errados); usar <strong>ML/REML</strong>.
+- Se a variância dos aleatórios = 0 → o modelo colapsa para o <strong>OLS</strong>.</p>
 <h3 id="dados-de-contagem">Dados de contagem</h3>
 <ul>
 <li>Contagem = inteiro &gt;= 0, responde "quantos".</li>
