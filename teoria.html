@@ -115,6 +115,52 @@ rio que todas sejam positivas.</li>
 <li><strong>Viabilidade:</strong> cada variável deve ter associação significativa com pelo menos uma outra (qui-quadrado). Variável isolada não entra.</li>
 <li>Não usa Z-score (isso é PCA); não é teste de hipótese.</li>
 </ul>
+<h3 id="acm-multinivel-nao-confundir">ACM × Multinível (não confundir)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ACM</th>
+<th>Multinível</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tipo</td>
+<td><strong>não supervisionada</strong></td>
+<td><strong>supervisionada</strong></td>
+</tr>
+<tr>
+<td>Variável dependente</td>
+<td><strong>não tem</strong></td>
+<td><strong>tem (Y)</strong></td>
+</tr>
+<tr>
+<td>Objetivo</td>
+<td>mapear <strong>associação entre categorias</strong></td>
+<td>modelar Y com <strong>efeitos fixos e aleatórios</strong></td>
+</tr>
+<tr>
+<td>Dados</td>
+<td>tabela de contingência</td>
+<td>dados <strong>aninhados</strong> (níveis)</td>
+</tr>
+<tr>
+<td>Saída</td>
+<td>mapa perceptual, inércia</td>
+<td>coeficientes, variâncias, ICC</td>
+</tr>
+<tr>
+<td>Inferência</td>
+<td>não (exploratória)</td>
+<td>sim (testes, IC)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ACM</strong> = explorar variáveis <strong>qualitativas</strong> (quem se associa com quem).</li>
+<li><strong>Multinível</strong> = lidar com <strong>dependência</strong> entre observações agrupadas (alunos em escolas, medidas repetidas).</li>
+</ul>
 <hr />
 <h2 id="d2-regressao-ols">D2 — Regressão OLS</h2>
 <h3 id="criterio-do-ols">Critério do OLS</h3>
