@@ -186,6 +186,15 @@ rio que todas sejam positivas.</li>
 <li><strong>Causas comuns:</strong> mudança de escala, outliers, variável omitida, dados agrupados.</li>
 </ul>
 <p><strong>Atenção:</strong> heterocedasticidade <strong>não enviesa os coeficientes</strong> — afeta a <strong>inferência</strong> (erros-padrão e testes).</p>
+<h3 id="metricas-de-regressao">Métricas de regressão</h3>
+<ul>
+<li><strong>MAE</strong> = média(<code>|y − ŷ|</code>) → mesma unidade de Y; <strong>robusto a outliers</strong>.</li>
+<li><strong>MSE</strong> = média(<code>(y − ŷ)²</code>) → unidade <strong>ao quadrado</strong>; penaliza mais os erros grandes.</li>
+<li><strong>RMSE</strong> = <code>√MSE</code> → mesma unidade de Y; <strong>sensível a outliers</strong>.</li>
+<li><strong>R²</strong> = <code>1 − SSE/SST</code> → <strong>fração da variância</strong> de Y explicada; <strong>não</strong> é % de acerto.</li>
+<li><strong>MAPE</strong> = média(<code>|y − ŷ| / y</code>) × 100 → percentual; cuidado quando <code>y</code> é próximo de zero.</li>
+</ul>
+<p><strong>Atenção:</strong> MAE e RMSE estão na unidade de Y; MSE não. R² não é acurácia.</p>
 <h3 id="box-cox-variavel-dependente">Box-Cox (variável dependente)</h3>
 <ul>
 <li>Transforma Y <strong>positivo</strong>: <code>Y* = (Y^λ − 1)/λ</code> (λ≠0); <code>ln(Y)</code> (λ=0).</li>
