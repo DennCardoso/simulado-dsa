@@ -334,6 +334,14 @@ modelo = sm.MixedLM.from_formula(
 <li><strong>Mais de duas categorias</strong> → logística <strong>multinomial</strong> (sem ordem) ou <strong>ordinal</strong> (com ordem).</li>
 <li>Modela <code>P(Y=1)</code> por meio do logito: <code>ln(p/(1-p)) = Xβ</code>.</li>
 </ul>
+<h3 id="logistica-como-prever">Logística — como prever</h3>
+<ul>
+<li>Monte o preditor linear: <code>z = β0 + β1·x1 + β2·x2 + ...</code></li>
+<li>Aplique a função logística: <code>p = 1 / (1 + e^(−z))</code>.</li>
+<li><code>p</code> é a <strong>probabilidade do evento</strong> (Y = 1).</li>
+<li>Coeficientes estão na escala <strong>log-odds</strong>: <code>e^β</code> = odds ratio.</li>
+</ul>
+<p><strong>Atenção:</strong> não aplique a exponencial em <code>p</code>; a exponencial aparece no denominador (<code>e^(−z)</code>).</p>
 <h3 id="logistica-e-multinomial">Logística e multinomial</h3>
 <ul>
 <li>Binária: <strong>1 logito</strong>. M categorias: <strong>M − 1 logitos</strong>.</li>
