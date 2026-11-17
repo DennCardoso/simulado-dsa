@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa dos conceitos estatísticos</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#0e1722;--card:#152230;--soft:#1b2b3b;--line:#25384a;
+  --ink:#e8f0f7;--muted:#9fb2c4;--accent:#8fd0f4;--accent2:#f5c26b;
+  --ok:#62d36a;--bad:#ff8a70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:400 15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+nav{position:sticky;top:0;z-index:10;background:#0a121b;border-bottom:1px solid var(--line)}
+nav .in{max-width:900px;margin:0 auto;padding:9px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+nav b{font-size:.9rem;margin-right:auto}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);font-weight:600}
+main{max-width:900px;margin:0 auto;padding:22px 16px 70px}
+h1{font-size:1.5rem;margin:.2em 0 .3em}
+h2{font-size:1.1rem;margin:2em 0 .6em;padding-top:.5em;border-top:1px solid var(--line)}
+p{margin:.5em 0}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:14px 0}
+.node{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:10px 16px;text-align:center;min-width:230px}
+.node b{display:block;font-size:.95rem}
+.node span{font-size:.8rem;color:var(--muted)}
+.node.hl{border-color:var(--accent);background:#17354a}
+.node.hl2{border-color:var(--accent2);background:#3a2f17}
+.arrow{color:var(--accent);font-size:1.1rem;line-height:1}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86rem;color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.2em;font-size:.9em}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--soft)}
+code{background:var(--soft);padding:1px 5px;border-radius:5px;font-size:.88em}
+.note{background:var(--soft);border-left:4px solid var(--accent2);border-radius:8px;padding:10px 13px;margin:12px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<nav><div class="in">
+  <b>Mapa dos conceitos estatísticos</b>
+  <a href="./">Simulado</a>
+  <a href="teoria.html">Teoria</a>
+  <a href="guia.html">Guia</a>
+</div></nav>
+<main>
+
+<h1>Do dado à validação do modelo</h1>
+<p class="muted">Um mapa mental: cada conceito é uma etapa. Se você entende a etapa, a fórmula deixa de ser decoreba.</p>
+
+<h2>1. Uma variável: centro e dispersão</h2>
+
+<div class="flow">
+  <div class="node"><b>Dados</b><span>x₁, x₂, …, xₙ</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl"><b>Média (x̄)</b><span>o centro: Σxᵢ / n</span></div>
+  <div class="arrow">▼</div>
+  <div class="node"><b>Desvios</b><span>xᵢ − x̄ &nbsp;(quanto cada valor se afasta do centro)</span></div>
+  <div class="arrow">▼</div>
+  <div class="node"><b>Desvios ao quadrado</b><span>(xᵢ − x̄)² &nbsp;(evita cancelamento e penaliza extremos)</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl"><b>Variância (s²)</b><span>média dos desvios²: Σ(xᵢ−x̄)² / (n−1)</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl2"><b>Desvio-padrão (s)</b><span>raiz da variância → volta à unidade original</span></div>
+</div>
+
+<div class="note">
+  <b>Por que a raiz?</b> A variância fica na unidade <b>ao quadrado</b> (ex.: R$²). O desvio-padrão volta para a unidade original (R$), por isso é mais interpretável.
+</div>
+
+<h2>2. Duas variáveis: variação conjunta</h2>
+
+<div class="grid2">
+  <div class="node"><b>Desvios de X</b><span>xᵢ − x̄</span></div>
+  <div class="node"><b>Desvios de Y</b><span>yᵢ − ȳ</span></div>
+</div>
+<div class="flow">
+  <div class="node"><b>Produto dos desvios</b><span>(xᵢ − x̄)(yᵢ − ȳ) → positivos quando andam juntos</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl"><b>Covariância</b><span>Σ(xᵢ−x̄)(yᵢ−ȳ) / (n−1)</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl2"><b>Correlação (r)</b><span>covariância / (sₓ · s_y) → adimensional, de −1 a 1</span></div>
+</div>
+
+<div class="note">
+  A covariância diz <b>direção</b> (positiva/negativa), mas depende da escala. A correlação <b>padroniza</b> pela escala, então só ela é comparável entre variáveis.
+</div>
+
+<h2>3. Estimativa: erro-padrão</h2>
+
+<div class="flow">
+  <div class="node"><b>Amostra</b><span>você observa só parte da população</span></div>
+  <div class="arrow">▼</div>
+  <div class="node hl"><b>Erro-padrão da média</b><span>s / √n &nbsp;(incerteza do estimador)</span></div>
+</div>
+
+<div class="note">
+  <b>Desvio-padrão</b> mede a dispersão <b>dos dados</b>. <b>Erro-padrão</b> mede a dispersão <b>do estimador</b> (quanto a estimativa varia de amostra para amostra). Mais n → menor erro-padrão.
+</div>
+
+<h2>4. Na validação do modelo</h2>
+
+<table>
+  <tr><th>Conceito</th><th>Fórmula</th><th>O que mede</th></tr>
+  <tr><td><b>Resíduo</b></td><td><code>eᵢ = yᵢ − ŷᵢ</code></td><td>erro de uma observação</td></tr>
+  <tr><td><b>MSE</b></td><td><code>Σeᵢ² / n</code></td><td>variância média dos resíduos</td></tr>
+  <tr><td><b>RMSE</b></td><td><code>√MSE</code></td><td>erro na unidade de Y</td></tr>
+  <tr><td><b>SST</b></td><td><code>Σ(yᵢ − ȳ)²</code></td><td>variação total de Y</td></tr>
+  <tr><td><b>SSE</b></td><td><code>Σ(yᵢ − ŷᵢ)²</code></td><td>variação não explicada</td></tr>
+  <tr><td><b>R²</b></td><td><code>1 − SSE/SST</code></td><td>fração da variância explicada</td></tr>
+  <tr><td><b>Erro-padrão do coeficiente</b></td><td><code>SE(β̂)</code></td><td>incerteza do coeficiente</td></tr>
+  <tr><td><b>Teste t</b></td><td><code>β̂ / SE(β̂)</code></td><td>quantos erros-padrão o efeito está de zero</td></tr>
+  <tr><td><b>Teste F</b></td><td><code>MSmodelo / MSresíduo</code></td><td>razão de variâncias (modelo × resíduo)</td></tr>
+  <tr><td><b>VIF</b></td><td><code>1 / (1 − R²ⱼ)</code></td><td>quanto a variável é explicada pelas outras</td></tr>
+</table>
+
+<div class="note">
+  <b>Fio condutor:</b> média → desvios → quadrados → variância. Tudo o que aparece na validação é uma variação disso: R² compara variâncias, t compara efeito com erro-padrão, F compara variâncias, VIF usa R².
+</div>
+
+<h2>Resumo em uma frase por termo</h2>
+<table>
+  <tr><th>Termo</th><th>Pergunta que responde</th></tr>
+  <tr><td><b>Média</b></td><td>Onde está o centro?</td></tr>
+  <tr><td><b>Variância</b></td><td>Quanto os dados se espalham (ao quadrado)?</td></tr>
+  <tr><td><b>Desvio-padrão</b></td><td>Quanto se espalham na unidade original?</td></tr>
+  <tr><td><b>Covariância</b></td><td>X e Y variam juntos?</td></tr>
+  <tr><td><b>Correlação</b></td><td>Qual a força/direção dessa variação conjunta?</td></tr>
+  <tr><td><b>Erro-padrão</b></td><td>Quanta incerteza há na estimativa?</td></tr>
+  <tr><td><b>R²</b></td><td>Quanto da variação de Y o modelo explica?</td></tr>
+</table>
+
+</main>
+</body>
+</html>
