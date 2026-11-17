@@ -171,6 +171,22 @@ rio que todas sejam positivas.</li>
 - Retas <strong>paralelas</strong> → só intercepto aleatório.
 - Retas com <strong>mesmo intercepto</strong> e inclinações diferentes → só inclinação aleatória.
 - Retas <strong>coincidentes</strong> → sem efeitos aleatórios (OLS/GLM basta).</p>
+<h3 id="python-modelo-multinivel-statsmodels">Python — modelo multinível (statsmodels)</h3>
+<pre><code class="language-python">import statsmodels.api as sm
+
+modelo = sm.MixedLM.from_formula(
+    formula='y ~ x + w + x:w',   # efeitos fixos (inclui interação cruzada)
+    groups='contexto',            # variável de nível 2 (grupo)
+    re_formula='x',               # inclinação aleatória de x (+ intercepto)
+    data=df
+).fit()                           # ML; use .fit(reml=True) para REML
+</code></pre>
+<ul>
+<li><code>groups</code> = variável que define o grupo (nível 2).</li>
+<li><code>re_formula='x'</code> = inclinação aleatória de x; o intercepto aleatório é padrão.</li>
+<li><code>re_formula='1'</code> = apenas intercepto aleatório.</li>
+</ul>
+<p><strong>Atenção:</strong> funções como <code>mle</code>, <code>glmm</code> e <code>multilevel</code> não existem no statsmodels para isso.</p>
 <h3 id="dados-de-contagem">Dados de contagem</h3>
 <ul>
 <li>Contagem = inteiro &gt;= 0, responde "quantos".</li>
