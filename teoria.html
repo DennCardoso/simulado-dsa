@@ -57,6 +57,7 @@ hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}
 <h3 id="pca-autovalores-e-variancia-explicada">PCA — autovalores e variância explicada</h3>
 <ul>
 <li>Na PCA pela <strong>matriz de correlações</strong>, cada variável é padronizada (variância 1) → <strong>variância total = p</strong> (nº de variáveis).</li>
+<li>Os autovalores são <strong>ordenados</strong>: <code>λ1 &gt;= λ2 &gt;= λ3 &gt;= ...</code> (o primeiro explica mais).</li>
 <li>Cada componente tem um <strong>autovalor λk</strong>.</li>
 <li><strong>Proporção explicada = λk / Σλ</strong> (na correlação, Σλ = p).</li>
 <li><strong>Critério de Kaiser:</strong> manter componentes com <strong>λ &gt; 1</strong>.</li>
@@ -213,10 +214,53 @@ rio que todas sejam positivas.</li>
 <p><strong>Atenção:</strong> Poisson <strong>não</strong> serve para dependente binária nem com 3 categorias. E <strong>M − 1 logitos</strong> é estrutura da <strong>multinomial</strong>, não do Poisson.</p>
 <h3 id="poisson">Poisson</h3>
 <ul>
+<li>Distribuição: <code>P(Y=y) = e^(−λ)·λ^y / y!</code>.</li>
 <li><code>ln(λ) = Xβ</code>; <code>E[Y] = Var[Y] = λ</code>.</li>
+<li>É o <strong>limite da binomial</strong> quando <code>n → ∞</code>, <code>p → 0</code> e <code>n·p = λ</code>.</li>
 <li><code>e^β</code> = fator multiplicativo da contagem esperada.</li>
 <li>Sobredispersão → <strong>binomial negativa</strong>; zeros em excesso → <strong>inflado de zeros</strong>.</li>
 <li>Estimação por <strong>máxima verossimilhança</strong> (iterativa, sem fórmula fechada).</li>
+</ul>
+<h3 id="poisson-x-binomial">Poisson x Binomial</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Binomial</th>
+<th>Poisson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conta</td>
+<td>sucessos em n tentativas</td>
+<td>eventos em um intervalo</td>
+</tr>
+<tr>
+<td>Parâmetros</td>
+<td>n, p</td>
+<td>λ</td>
+</tr>
+<tr>
+<td>Valores</td>
+<td>0..n</td>
+<td>0,1,2,...</td>
+</tr>
+<tr>
+<td>Variância</td>
+<td>n·p·(1−p)</td>
+<td>λ</td>
+</tr>
+<tr>
+<td>Relação</td>
+<td>variância &lt; média</td>
+<td>variância = média</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Bernoulli</strong> = binomial com n = 1.</li>
+<li><strong>Binomial negativa</strong> não é "binomial": é usada para contagem com sobredispersão.</li>
 </ul>
 <h3 id="poisson-como-prever">Poisson — como prever</h3>
 <ul>
