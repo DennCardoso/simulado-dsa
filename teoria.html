@@ -108,7 +108,9 @@ rio que todas sejam positivas.</li>
 <p><strong>Atenção:</strong> os eixos não são contagens, número de categorias nem significância estatística.</p>
 <h3 id="acm-analise-de-correspondencia-multipla">ACM — Análise de Correspondência Múltipla</h3>
 <ul>
-<li>Para <strong>3+ variáveis categóricas</strong>; usa distância <strong>qui-quadrado</strong>.</li>
+<li>Para <strong>3+ variáveis categóricas</strong> (a AC simples usa 2).</li>
+<li>Parte de <strong>tabela de contingência</strong> (contagens), não de matriz de correlação de Pearson.</li>
+<li>Usa distância <strong>qui-quadrado</strong> entre perfis — <strong>não</strong> euclidiana.</li>
 <li>Proximidade no mapa = <strong>associação</strong> entre categorias.</li>
 <li><strong>Viabilidade:</strong> cada variável deve ter associação significativa com pelo menos uma outra (qui-quadrado). Variável isolada não entra.</li>
 <li>Não usa Z-score (isso é PCA); não é teste de hipótese.</li>
