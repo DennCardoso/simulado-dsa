@@ -491,6 +491,19 @@ modelo = sm.MixedLM.from_formula(
 <li>A função <strong>degrau não é diferenciável</strong>; por isso não é usada no treino por gradiente.</li>
 </ul>
 <p><strong>Atenção:</strong> não atribuir XOR ao perceptron simples; o perceptron não resolve qualquer classificação.</p>
+<h3 id="arvores-de-decisao">Árvores de decisão</h3>
+<ul>
+<li><strong>Supervisionada e não paramétrica:</strong> divide o espaço das variáveis em <strong>regiões</strong> por meio de regras <strong>if-then</strong>, até chegar a uma previsão.</li>
+<li><strong>Estrutura:</strong> nó raiz → nós internos (divisões) → ramos → <strong>folhas</strong> (previsão).</li>
+<li><strong>Critérios de divisão:</strong></li>
+<li>Classificação: <strong>Gini</strong> <code>1 − Σp²</code> ou <strong>entropia</strong> <code>−Σp·log2(p)</code>.</li>
+<li>Regressão: redução da <strong>variância/MSE</strong>.</li>
+<li><strong>Gini:</strong> nó puro = 0; 50/50 = 0,5.</li>
+<li><strong>Ganho de informação:</strong> impureza do pai − impureza ponderada dos filhos.</li>
+<li><strong>Não exige padronização</strong> e captura não linearidades/interações.</li>
+<li><strong>Risco:</strong> overfitting (árvore profunda) e instabilidade (pequenas mudanças nos dados mudam a árvore).</li>
+<li><strong>Controle:</strong> <code>max_depth</code>, <code>min_samples_leaf</code>, <code>min_samples_split</code>, poda (<code>ccp_alpha</code>).</li>
+</ul>
 <h3 id="random-forest-hiperparametros">Random Forest — hiperparâmetros</h3>
 <ul>
 <li><strong><code>n_estimators</code>:</strong> número de árvores.</li>
