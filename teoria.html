@@ -129,6 +129,16 @@ rio que todas sejam positivas.</li>
 <li>Na regressão simples, <code>F = t²</code> (por isso parecem iguais).</li>
 <li>F não diz qual variável é significativa; só que pelo menos uma é.</li>
 </ul>
+<h3 id="heterocedasticidade">Heterocedasticidade</h3>
+<ul>
+<li><strong>Definição:</strong> a variância dos erros <strong>não é constante</strong> entre as observações: <code>Var(ε|X)</code> varia.</li>
+<li><strong>Homocedasticidade:</strong> <code>Var(ε|X) = σ²</code> (constante) — é o pressuposto do OLS.</li>
+<li><strong>Consequências:</strong> os coeficientes do OLS continuam <strong>não viesados</strong>, mas os <strong>erros-padrão ficam errados</strong> → testes t/F e intervalos de confiança <strong>inválidos</strong>; perda de eficiência.</li>
+<li><strong>Detecção:</strong> gráfico de resíduos (formato de <strong>funil/cone</strong>), <strong>Breusch-Pagan</strong>, White, Goldfeld-Quandt.</li>
+<li><strong>Correção:</strong> erros-padrão <strong>robustos</strong> (HC/White), <strong>WLS</strong>, transformação (log, Box-Cox).</li>
+<li><strong>Causas comuns:</strong> mudança de escala, outliers, variável omitida, dados agrupados.</li>
+</ul>
+<p><strong>Atenção:</strong> heterocedasticidade <strong>não enviesa os coeficientes</strong> — afeta a <strong>inferência</strong> (erros-padrão e testes).</p>
 <h3 id="box-cox-variavel-dependente">Box-Cox (variável dependente)</h3>
 <ul>
 <li>Transforma Y <strong>positivo</strong>: <code>Y* = (Y^λ − 1)/λ</code> (λ≠0); <code>ln(Y)</code> (λ=0).</li>
