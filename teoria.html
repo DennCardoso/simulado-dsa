@@ -357,6 +357,16 @@ rio que todas sejam positivas.</li>
 <li>A função <strong>degrau não é diferenciável</strong>; por isso não é usada no treino por gradiente.</li>
 </ul>
 <p><strong>Atenção:</strong> não atribuir XOR ao perceptron simples; o perceptron não resolve qualquer classificação.</p>
+<h3 id="random-forest-hiperparametros">Random Forest — hiperparâmetros</h3>
+<ul>
+<li><strong><code>n_estimators</code>:</strong> número de árvores.</li>
+<li><strong><code>max_features</code>:</strong> nº de variáveis sorteadas por divisão (controla a diversidade).</li>
+<li><strong><code>max_depth</code>:</strong> profundidade máxima.</li>
+<li><strong><code>min_samples_split</code> / <code>min_samples_leaf</code>:</strong> mínimo de amostras para dividir / para uma folha.</li>
+<li><strong><code>bootstrap</code>:</strong> amostragem com reposição.</li>
+<li><strong><code>oob_score</code>:</strong> usa os registros OOB como validação.</li>
+</ul>
+<p><strong>Atenção:</strong> <code>kernel</code> é de SVM; <code>alpha</code>/regularização L1 é de modelos lineares/XGBoost — não são hiperparâmetros do Random Forest.</p>
 <h3 id="xgboost-hiperparametros-principais">XGBoost — hiperparâmetros principais</h3>
 <table>
 <thead>
