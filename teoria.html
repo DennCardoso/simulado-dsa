@@ -532,6 +532,10 @@ modelo = sm.MixedLM.from_formula(
 <li><strong>RI (Random Index):</strong> valor tabelado por Saaty para matrizes de ordem <strong>1 até 15</strong>.</li>
 <li>Critério usual: <strong>CR &lt;= 0,10</strong> → julgamentos consistentes.</li>
 </ul>
+<p><strong>AHP-Gaussiano — normalização da matriz de decisão:</strong>
+- Os critérios vêm em <strong>unidades/escalas diferentes</strong>. Normalizar torna os valores <strong>adimensionais</strong>, permitindo comparar e agregar (soma ponderada).
+- Não é para calcular média geométrica (isso é na matriz de comparações pareadas do AHP clássico) nem para garantir que a matriz tenha inversa.
+- A normalização é o que permite <strong>somar critérios heterogêneos</strong> de forma justa.</p>
 <h3 id="pli-solucao-grafica-e-inteira">PLI — solução gráfica e inteira</h3>
 <ul>
 <li>Resolve-se a <strong>relaxação linear</strong> (vértices) e depois testam-se os <strong>pontos inteiros viáveis</strong> dentro da região.</li>
