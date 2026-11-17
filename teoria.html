@@ -347,6 +347,13 @@ modelo = sm.MixedLM.from_formula(
 <li>Binária: <strong>1 logito</strong>. M categorias: <strong>M − 1 logitos</strong>.</li>
 <li><code>logito = ln(p / (1−p))</code>; <code>e^β</code> = odds ratio.</li>
 </ul>
+<p><strong>Como prever (softmax):</strong>
+- Escolha uma <strong>categoria de referência</strong> (<code>z_ref = 0</code>).
+- Para cada categoria <code>j ≠ ref</code>: <code>z_j = βj0 + βj1·x1 + ...</code>
+- <code>P(Y = j) = e^(z_j) / (1 + Σ(k≠ref) e^(z_k))</code>
+- <code>P(Y = ref) = 1 / (1 + Σ(k≠ref) e^(z_k))</code>
+- <code>e^β</code> = razão de chances relativas da categoria j vs referência.
+- As probabilidades <strong>somam 1</strong>.</p>
 <h3 id="matriz-de-confusao-metricas">Matriz de confusão — métricas</h3>
 <ul>
 <li><strong>VP</strong> (verdadeiro positivo), <strong>VN</strong> (verdadeiro negativo), <strong>FP</strong> (falso positivo), <strong>FN</strong> (falso negativo).</li>
